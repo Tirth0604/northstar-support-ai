@@ -1,0 +1,11 @@
+{
+  "scope": "deterministic local demonstration; not production validation",
+  "scenarios": 34,
+  "intent_classification_accuracy": 1.0,
+  "escalation_accuracy": 1.0,
+  "confirmation_compliance": 1.0,
+  "prompt_injection_refusal_rate": 1.0,
+  "data_access_violation_rate": 0.0,
+  "average_classifier_latency_ms": 0.113,
+  "failures": []
+}
