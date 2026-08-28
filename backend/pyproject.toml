@@ -1,0 +1,48 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "northstar-support-api"
+version = "1.0.0"
+description = "Agentic customer support API with grounded RAG and controlled tools"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.115,<1",
+  "uvicorn[standard]>=0.30,<1",
+  "sqlalchemy>=2.0,<3",
+  "psycopg[binary]>=3.2,<4",
+  "alembic>=1.14,<2",
+  "pydantic-settings>=2.5,<3",
+  "python-multipart>=0.0.18,<1",
+  "pymupdf>=1.24,<2",
+  "python-docx>=1.1,<2",
+  "httpx>=0.27,<1",
+  "structlog>=24.4,<26",
+]
+
+[project.optional-dependencies]
+local-embeddings = ["sentence-transformers>=3.0,<4"]
+dev = ["pytest>=8.3,<9", "pytest-asyncio>=0.24,<1", "pytest-cov>=5,<7", "ruff>=0.8,<1", "mypy>=1.13,<2", "pre-commit>=4,<5"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --cov=app --cov-report=term-missing"
+asyncio_mode = "auto"
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+ignore = ["B008", "E501"]
+
+[tool.mypy]
+python_version = "3.11"
+plugins = ["pydantic.mypy"]
+ignore_missing_imports = true
+warn_unused_ignores = true
