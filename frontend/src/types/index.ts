@@ -1,0 +1,12 @@
+﻿export type Role='customer'|'support_agent'|'admin'
+export type User={id:string;name:string;email:string;role:Role}
+export type Citation={document_id:string;document_name:string;section?:string;page_number?:number;excerpt:string;relevance_score:number}
+export type PendingAction={confirmation_token:string;summary:string;consequences:string;expires_at:string;action:string}
+export type StructuredResponse={response_type:string;message:string;citations:Citation[];tool_events:Array<{tool_name:string;status:string;result?:Record<string,unknown>}>;requires_confirmation:boolean;pending_action?:PendingAction;escalation?:Record<string,unknown>;ui_payload:Record<string,unknown>}
+export type Message={id:string;role:string;content:string;structured_payload?:StructuredResponse;created_at:string;citations?:Citation[]}
+export type Conversation={id:string;title:string;status:string;ai_enabled:boolean;assigned_agent_id?:string;summary?:string;pending_action?:PendingAction;created_at:string;updated_at:string;messages:Message[]}
+export type Order={id:string;order_number:string;status:string;payment_status:string;total_amount:number;created_at:string;shipping_address?:string}
+export type Ticket={id:string;subject:string;category:string;priority:string;status:string;created_at:string}
+export type QueueItem={escalation_id:string;conversation_id:string;reason:string;summary:string;handoff:Record<string,unknown>;priority:string;category:string;waiting_since:string}
+export type Metrics={conversations:number;tickets:number;resolution_rate:number;human_handoff_rate:number;average_response_time_ms:number;knowledge_documents:number}
+export type DocumentItem={id:string;original_filename:string;file_type:string;file_size:number;upload_status:string;chunk_count:number;created_at:string;error_message?:string}
