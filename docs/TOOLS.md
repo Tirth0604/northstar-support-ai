@@ -1,0 +1,2 @@
+﻿# Tools
+Every tool uses Pydantic input validation plus code-owned policy metadata: roles, identity requirement, confirmation, mutation, and calls per minute. The registry covers authenticated customer, orders/details/shipping, cancellation/return eligibility, confirmed cancellation, customer tickets/details/creation, ticket priority/messages, and human escalation. Ownership predicates live in handlers, never prompts. Tool attempts persist status, inputs, safe outputs/errors, and latency. Unsupported address/refund/return writes are escalated.
