@@ -1,0 +1,22 @@
+﻿services:
+  db:
+    image: postgres:16-alpine
+    environment: {POSTGRES_DB: support_ai, POSTGRES_USER: postgres, POSTGRES_PASSWORD: postgres}
+    healthcheck: {test: ["CMD-SHELL", "pg_isready -U postgres -d support_ai"], interval: 5s, timeout: 5s, retries: 12}
+    volumes: [northstar_postgres:/var/lib/postgresql/data]
+  redis:
+    image: redis:7-alpine
+    command: redis-server --appendonly yes
+    healthcheck: {test: ["CMD", "redis-cli", "ping"], interval: 5s, timeout: 3s, retries: 10}
+    volumes: [northstar_redis:/data]
+  backend:
+    build: ./backend
+    environment: {DATABASE_URL: postgresql+psycopg://postgres:postgres@db:5432/support_ai, REDIS_URL: redis://redis:6379/0, VECTOR_STORE_PATH: /app/data/vector_store, UPLOAD_DIRECTORY: /app/data/uploads, JWT_SECRET_KEY: "${JWT_SECRET_KEY:-northstar-compose-demo-change-me}", ALLOWED_ORIGINS: "http://localhost:3000"}
+    depends_on: {db: {condition: service_healthy}}
+    volumes: [northstar_vectors:/app/data]
+    ports: ["8000:8000"]
+  frontend:
+    build: {context: ./frontend, args: {VITE_API_URL: /api/v1}}
+    depends_on: {backend: {condition: service_healthy}}
+    ports: ["3000:80"]
+volumes: {northstar_postgres: {}, northstar_redis: {}, northstar_vectors: {}}
